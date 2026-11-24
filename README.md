@@ -1,41 +1,41 @@
 # EvidenceQA
 
-EvidenceQA is a privacy-first Python tool for finding relevant, traceable evidence in documents. Its goal is to help students, researchers and the public navigate policies, instructions, reports and other documents without paying for an AI service.
+An open-source, local-first research engine that retrieves evidence and optionally generates answers with traceable citations. Python 3.10+; no mandatory paid API.
 
-## Quick start
-
-Requires Python 3.10 or newer.
+## Install
 
 ```sh
 pip install .
 evidenceqa "When do applications close?" ./examples
 ```
 
-For PDF text extraction, install with `pip install '.[pdf]'`. Scanned PDFs require OCR, which is not yet supported.
+Optional PDF and semantic search: `pip install '.[pdf,semantic]'`. Semantic search downloads a pretrained model on first use. Scanned PDFs require OCR, not implemented.
 
-## What it does
+## Online research
 
-- Searches local text, Markdown and text-based PDF files.
-- Ranks excerpts using BM25 lexical relevance.
-- Returns exact source paths and line ranges or PDF page references.
-- Returns no evidence when no query terms match.
-- Runs locally without an API key or network access after installation.
+```sh
+evidenceqa "What is photosynthesis?" --web
+```
 
-The current release is an **extractive retrieval prototype**, not a general-purpose AI chatbot or fact checker. Scores are not probabilities. Read original sources before making decisions. No web search, generated answers, semantic retrieval or OCR is implemented yet.
+The web provider searches English Wikipedia and retrieves article extracts with revision links where available. It is not general web search or a real-time news service. Your question is sent to Wikipedia only when you enable --web.
 
-## Development
+## Local AI synthesis
+
+Install and start Ollama separately, then download a compatible model, for example `ollama pull qwen2.5:3b`.
+
+```sh
+evidenceqa "When do applications close?" ./examples --model qwen2.5:3b
+evidenceqa "What is photosynthesis?" --web --semantic --model qwen2.5:3b
+```
+
+The model receives retrieved text and the question on localhost. Each generated claim must cite valid evidence IDs and exact quotes; malformed answers are rejected. Exact quotation validation does **not** prove that a claim follows from the quote. Models can still misinterpret sources or follow malicious text. Inspect evidence, especially for high-stakes decisions. Semantic similarity and BM25 scores are not confidence estimates. Network requests and models may fail. No independent fact-checking or source trust scoring is provided.
+
+## Tests
 
 ```sh
 python -m unittest discover -s tests
 ```
 
-See CONTRIBUTING.md for contribution guidance.
+Tests use mocked web and model responses; they do not establish live integration reliability.
 
-## Roadmap
-
-1. Evaluate retrieval on public question-answer benchmarks.
-2. Improve passage boundaries, synonyms and multilingual retrieval.
-3. Add optional local model synthesis with citation checking and explicit abstention.
-4. Add opt-in public-source retrieval and a local user interface.
-
-MIT licensed.
+MIT licensed. Contributions welcome.

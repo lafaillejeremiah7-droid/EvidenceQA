@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "evidenceqa"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local, citation-first document question answering"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -12,6 +12,7 @@ dependencies = []
 
 [project.optional-dependencies]
 pdf = ["pypdf>=5"]
+semantic = ["sentence-transformers>=3,<6"]
 
 [project.scripts]
 evidenceqa = "evidenceqa.cli:main"

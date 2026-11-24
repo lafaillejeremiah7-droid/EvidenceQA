@@ -1,8 +1,0 @@
-*
-!requirements.txt
-!memescanner/
-!memescanner/**
-!scripts/
-!scripts/signal_state.py
-**/__pycache__/
-**/*.pyc
